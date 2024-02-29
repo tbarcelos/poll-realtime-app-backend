@@ -1,40 +1,22 @@
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-} from '@nestjs/websockets';
-
-import { PollsService } from './polls.service';
-import { CreatePollDto } from './dto/create-poll.dto';
-import { UpdateOptionDto } from './dto/update-option.dto';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { Server } from 'socket.io';
 import { Poll } from './entities/poll.entity';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: '*',
+  },
+})
 export class PollsGateway {
-  constructor(private readonly pollsService: PollsService) {}
+  @WebSocketServer()
+  server: Server;
 
-  @SubscribeMessage('createPoll')
-  create(@MessageBody() createPollDto: CreatePollDto): Promise<Poll> {
-    return this.pollsService.create(createPollDto);
+  afterInit() {
+    console.log('WebSocket Gateway initialized');
   }
 
-  @SubscribeMessage('findAllPolls')
-  findAll() {
-    return this.pollsService.findAll();
-  }
-
-  @SubscribeMessage('findOnePoll')
-  findOne(@MessageBody() id: number) {
-    return this.pollsService.findOne(id);
-  }
-
-  @SubscribeMessage('updateOptionPoll')
-  update(@MessageBody() updateOptionDto: UpdateOptionDto): Promise<Poll> {
-    return this.pollsService.incrementVote(updateOptionDto);
-  }
-
-  @SubscribeMessage('removePoll')
-  remove(@MessageBody() id: number) {
-    return this.pollsService.remove(id);
+  sendVoteUpdate(updatedPoll: Poll) {
+    return this.server.emit('voteUpdate', { data: updatedPoll });
+    // console.log('Emitting voteUpdate event:', emit);
   }
 }

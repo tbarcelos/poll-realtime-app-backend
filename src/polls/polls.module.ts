@@ -8,7 +8,7 @@ import { PollsController } from './polls.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Poll, Option])],
-  providers: [PollsGateway, PollsService],
+  providers: [PollsService, PollsGateway],
   controllers: [PollsController],
 })
 export class PollsModule {}

@@ -1,7 +1,8 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatePollDto {
   @IsNotEmpty()
+  @IsString()
   title: string;
 
   @IsNotEmpty()

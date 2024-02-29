@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { WsAdapter } from '@nestjs/platform-ws';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
@@ -9,7 +9,8 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
 
-  app.useWebSocketAdapter(new WsAdapter(app));
+  app.enableCors();
+  app.useWebSocketAdapter(new IoAdapter(app));
 
   await app.listen(3003);
   console.log(`Application is running on: ${await app.getUrl()}`);

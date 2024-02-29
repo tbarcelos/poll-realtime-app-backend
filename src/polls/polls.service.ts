@@ -6,6 +6,7 @@ import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdateOptionDto } from './dto/update-option.dto';
 import { Poll } from './entities/poll.entity';
 import { Option } from './entities/option.entity';
+import { PollsGateway } from './polls.gateway';
 
 @Injectable()
 export class PollsService {
@@ -14,6 +15,7 @@ export class PollsService {
     private readonly pollsRepository: Repository<Poll>,
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
+    private pollsGateway: PollsGateway,
   ) {}
 
   async create(createPollDto: CreatePollDto): Promise<Poll> {
@@ -54,7 +56,6 @@ export class PollsService {
   }
 
   findOne(id: number): Promise<Poll> {
-    console.log('id', id);
     return this.pollsRepository.findOne({
       where: { id: id },
       relations: {
@@ -78,8 +79,11 @@ export class PollsService {
         'votesCount',
         1,
       )
-    )
-      return await this.findOne(updateOptionDto.pollId);
+    ) {
+      const updatePoll = await this.findOne(updateOptionDto.pollId);
+      this.pollsGateway.sendVoteUpdate(updatePoll);
+      return updatePoll;
+    }
   }
 
   remove(id: number) {

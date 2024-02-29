@@ -2,10 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { faker } from '@faker-js/faker';
 
 const createUserDto: CreateUserDto = {
-  username: 'firstName #1',
-  password: 'password #1',
+  username: faker.internet.userName(),
+  password: faker.internet.password(),
 };
 
 describe('UsersController', () => {
@@ -78,7 +79,7 @@ describe('UsersController', () => {
     it('should find a user', () => {
       expect(usersController.findOneByUserId(1)).resolves.toEqual({
         username: 'lastName #1',
-        userId: 1,
+        id: 1,
       });
       expect(usersService.findOneByUserId).toHaveBeenCalled();
     });
@@ -89,7 +90,7 @@ describe('UsersController', () => {
       expect(
         usersController.findOneByUsername('firstName #1'),
       ).resolves.toEqual({
-        userId: 1,
+        id: 1,
         username: 'firstName #1',
       });
       expect(usersService.findOneByUserId).toHaveBeenCalled();

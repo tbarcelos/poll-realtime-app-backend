@@ -11,6 +11,8 @@ import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
 import { LoginRequest } from './dto/login-request';
 import { RegisterRequest } from './dto/register-request';
+import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
+import { UserAlreadyExistsException } from './exceptions/user-already-exists.exception';
 
 @Controller('auth')
 export class AuthController {
@@ -19,21 +21,30 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() loginRequest: LoginRequest) {
-    return this.authService.signIn(
-      loginRequest.username,
-      loginRequest.password,
-    );
+  async signIn(@Body() loginRequest: LoginRequest) {
+    try {
+      const user = await this.authService.signIn(
+        loginRequest.username,
+        loginRequest.password,
+      );
+      return user;
+    } catch (error) {
+      throw new InvalidCredentialsException();
+    }
   }
 
-  @Public()
   @HttpCode(HttpStatus.OK)
+  @Public()
   @Post('register')
-  signUp(@Body() registerRequest: RegisterRequest) {
-    return this.authService.signUp(
-      registerRequest.username,
-      registerRequest.password,
-    );
+  async signUp(@Body() registerRequest: RegisterRequest) {
+    try {
+      return await this.authService.signUp(
+        registerRequest.username,
+        registerRequest.password,
+      );
+    } catch (error) {
+      throw new UserAlreadyExistsException();
+    }
   }
 
   @Get('profile')

@@ -5,17 +5,12 @@ import * as request from 'supertest';
 import { AuthModule } from '../auth.module';
 import { AuthController } from '../auth.controller';
 
-import { loginResponse, userRequest, userResponse } from './mocks';
+import { userRequest } from './mocks';
 
 import { User } from '../../users/user.entity';
 
 describe('Auth integration Tests', () => {
   let app: INestApplication;
-
-  const authService = {
-    signIn: () => ({ accessToken: loginResponse.accessToken }),
-    signUp: () => ({ accessToken: loginResponse.accessToken }),
-  };
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({

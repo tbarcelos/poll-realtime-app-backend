@@ -4,11 +4,11 @@ import {
   UnauthorizedException,
   BadRequestException,
 } from '@nestjs/common';
-import { UsersService } from '@/users/users.service';
+import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from '@/users/dto/create-user.dto';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import { BCRYPT_ADAPTER_INTERFACE, jwtConstants } from './constants';
-import { BcryptAdapterInterface } from '@/utils/bcrypt-adapter';
+import { BcryptAdapterInterface } from '../utils/bcrypt-adapter';
 
 @Injectable()
 export class AuthService {

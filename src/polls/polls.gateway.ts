@@ -17,6 +17,5 @@ export class PollsGateway {
 
   sendVoteUpdate(updatedPoll: Poll) {
     return this.server.emit('voteUpdate', { data: updatedPoll });
-    // console.log('Emitting voteUpdate event:', emit);
   }
 }

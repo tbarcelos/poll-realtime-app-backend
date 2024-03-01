@@ -11,8 +11,6 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { UserNotFoundException } from './exceptions/user-not-found.exception';
-import { UserAlreadyExistsException } from './exceptions/user-already-exists.exception';
-import { UserDeletionException } from './exceptions/user-deletion.exception';
 import { User } from './user.entity';
 
 @Controller('users')
@@ -21,20 +19,12 @@ export class UsersController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    try {
-      return await this.usersService.create(createUserDto);
-    } catch (error) {
-      throw new UserAlreadyExistsException();
-    }
+    return await this.usersService.create(createUserDto);
   }
 
   @Get()
   async findAll(): Promise<User[]> {
-    try {
-      return await this.usersService.findAll();
-    } catch (error) {
-      throw new UserNotFoundException();
-    }
+    return await this.usersService.findAll();
   }
 
   @Get(':id')
@@ -57,10 +47,6 @@ export class UsersController {
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
-    try {
-      return await this.usersService.remove(id);
-    } catch (error) {
-      throw new UserDeletionException();
-    }
+    return await this.usersService.remove(id);
   }
 }

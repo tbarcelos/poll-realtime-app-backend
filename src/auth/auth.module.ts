@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { UsersModule } from '@/users/users.module';
+import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { jwtConstants, BCRYPT_ADAPTER_INTERFACE } from './constants';
-import { BcryptAdapter } from '@/utils/bcrypt-adapter';
+import { BcryptAdapter } from '../utils/bcrypt-adapter';
 
 @Module({
   imports: [

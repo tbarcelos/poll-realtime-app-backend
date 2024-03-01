@@ -1,13 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  JoinColumn,
-  OneToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Option } from './option.entity';
-import { User } from '@/users/user.entity';
 
 @Entity()
 export class Poll {
@@ -16,10 +8,6 @@ export class Poll {
 
   @Column()
   title: string;
-
-  @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
 
   @OneToMany(() => Option, (option) => option.poll, {
     cascade: true,

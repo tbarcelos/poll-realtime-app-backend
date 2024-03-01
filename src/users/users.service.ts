@@ -16,6 +16,8 @@ export class UsersService {
     user.username = createUserDto.username;
     user.password = createUserDto.password;
 
+    if (!user.username) throw new Error('Username cannot be empty');
+
     return this.usersRepository.save(user);
   }
 
